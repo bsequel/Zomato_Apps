@@ -53,8 +53,8 @@ def run_pdf_etl(request):
             "This is to inform you that the scheduled ETL job has completed successfully.\n\n"
             "However, no new unread emails containing valid PDF attachments were found for processing during this run.\n\n"
             "Summary:\n"
-            "- PDFs Processed: 0\n"
-            "- Successfully Processed: 0\n\n"
+            f"- PDFs Processed: {len(decrypted_info)}\n"
+            f"- Successfully Processed: {len(decrypted_info)}\n\n"
             "No action is required at this time.\n\n"
             "Best regards,\n"
             "ETL Automation System"
@@ -62,10 +62,11 @@ def run_pdf_etl(request):
 
         # notify_admin(subject,message)
         if not decrypted_info:
+            notify_admin(subject,message)
             return JsonResponse({
                 "message": "No unread emails with valid PDFs found.",
-                "pdfs_processed": 0,
-                "successfully_processed": 0
+                "pdfs_processed": {len(decrypted_info)},
+                "successfully_processed": {len(decrypted_info)}
             })
 
         success_count = 0
