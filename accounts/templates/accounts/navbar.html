@@ -1,0 +1,32 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <!-- <a class="navbar-brand" href="/" style="color: #ffffff;">
+                <img src="{% static  'images/logo.avif' %}" alt="Eternal Logo" srcset="" style="height: 45px;width: 45px;padding: 2px;">Eternal
+            </a> -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <!-- <li class="nav-item"><a class="nav-link" href="#home">Home</a></li> -->
+                <li class="nav-item"><img src="{% static  'images/logo.avif' %}" alt="Eternal Logo" srcset=""
+                        style="height: 45px;width: 50px;padding: 1px;border-radius: 8px; margin-right: 10px;"></li>
+                <li class="nav-item"><a class="nav-link" href="/" style="color: #ffffff;">Home</a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li> -->
+
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}"
+                        style="color: #ffffff;">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}" style="color: #ffffff;">Logout</a>
+                </li>
+                {% else %}
+                <!-- <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}" style="color: #ffffff;">Dashboard</a></li> -->
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}" style="color: #ffffff;">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

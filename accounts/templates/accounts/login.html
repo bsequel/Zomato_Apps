@@ -1,0 +1,29 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+    <h4 class="mb-3 text-center">Login to Your Account</h4>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <div class="text-danger small">{{ field.errors.0 }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-primary w-100">Login</button>
+    </form>
+
+    <div class="text-center mt-3">
+      <p>Don’t have an account? <a href="{% url 'register' %}">Register</a></p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

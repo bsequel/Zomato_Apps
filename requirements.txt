@@ -1,0 +1,38 @@
+# Django core
+Django==5.1.4
+asgiref==3.8.1
+sqlparse==0.5.3
+tzdata==2025.2
+
+# Environment variables
+python-dotenv==1.1.1
+
+# Django utilities
+django-cors-headers==4.7.0
+django-crispy-forms==2.4
+crispy-bootstrap5==2025.6
+django-filter==25.1
+djangorestframework==3.16.0
+djangorestframework_simplejwt==5.5.0
+
+# Database drivers
+psycopg2-binary==2.9.9  # PostgreSQL
+
+
+# Celery for background tasks
+celery==5.3.6
+redis==5.0.4
+
+# File handling & parsing
+pillow==11.2.1
+openpyxl==3.1.5
+pypdf==5.8.0
+pdfplumber==0.11.7
+PyYAML==6.0.2
+requests==2.32.3
+
+# Optional AWS S3 & cloud
+boto3==1.38.16
+
+# Security
+cryptography==45.0.4
