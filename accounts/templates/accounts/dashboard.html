@@ -100,7 +100,7 @@
                 <span id="username">
                     User
                 </span>
-                <span class="" id="activeSection" style="color: rgb(168, 16, 16);">
+                <span class="" id="activeSection" style="color: rgb(94, 94, 94);">
                     Section
                 </span>
 
@@ -184,7 +184,7 @@
                 <div class="col-md-4">
                     <div class="card text-center border-0 shadow rounded-4 bg-light">
                         <div class="card-body">
-                            <span class="badge bg-danger mb-1 px-3 py-1 rounded-pill">Fraud ₹</span>
+                            <span class="badge bg-danger mb-1 px-3 py-1 rounded-pill">Total Transaction Amount ₹</span>
                             <h4 class="text-danger fw-bold mt-2" id="card-fraud-amount">₹0</h4>
                         </div>
                     </div>
@@ -302,12 +302,12 @@
                             <input class="form-control" id="end-date" type="date" />
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-danger px-4" id="apply-filters">
+                            <button class="btn btn-dark px-4" id="apply-filters">
                                 Apply Filters
                             </button>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-outline-secondary" id="reset-filters">
+                            <button class="btn btn-dark" id="reset-filters">
                                 &orarr;
                             </button>
                         </div>
@@ -571,11 +571,11 @@
 
             {% if user.role == 'admin' %}
             <!-- Create User Button -->
-            <button class="btn btn-primary mb-3" data-bs-target="#createUserModal" data-bs-toggle="modal">
+            <button class="btn btn-dark mb-3" data-bs-target="#createUserModal" data-bs-toggle="modal">
                 + Create New User
             </button>
             <!-- Download Excel Button -->
-            <button class="btn btn-success mb-3 ms-2" id="downloadExcelBtn">
+            <button class="btn btn-dark mb-3 ms-2" id="downloadExcelBtn">
                 ⬇️ Download Excel
             </button>
             <!-- Create User Modal -->
@@ -609,10 +609,10 @@
                             <div class="mb-3">
                                 {{ create_form.role.label_tag }} {{ create_form.role }}
                             </div>
-                            <button class="btn btn-success" type="submit">
+                            <button class="btn btn-dark" type="submit">
                                 Create
                             </button>
-                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                            <button class="btn btn-dark" data-bs-dismiss="modal" type="button">
                                 Cancel
                             </button>
                         </form>

@@ -193,7 +193,8 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')  # your-email@gmail.com
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # app password
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-ADMINS = [('beginasnoob', 'beginasnoob1996@gmail.com'),('huzefa', 'huzefa.chhatriwala@sequelstring.com'),('anumeha','anumeha.sinha@sequelstring.com')]  # List of recipients
+ADMINS = [('beginasnoob', 'beginasnoob1996@gmail.com')]  # List of recipients
+# ADMINS = [('beginasnoob', 'beginasnoob1996@gmail.com'),('huzefa', 'huzefa.chhatriwala@sequelstring.com'),('anumeha','anumeha.sinha@sequelstring.com')]  # List of recipients
 
 
 REST_FRAMEWORK = {
