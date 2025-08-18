@@ -36,7 +36,7 @@
   --alert-access: #dc3545;
   --alert-etl: #0d6efd;
   --ripple-bg: radial-gradient(circle, transparent 1%, rgba(0, 0, 0, 0.1) 1%);
-  
+
   /* Shadow Variables */
   --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.15);
   --shadow-medium: 2px 0 12px 0 rgba(0, 0, 0, 0.12);
@@ -47,7 +47,7 @@
   --shadow-btn-active: 0 4px 15px rgba(0, 47, 255, 0.3);
   --shadow-pulse: 0 0 0 0 rgba(243, 243, 244, 0.7);
   --shadow-pulse-end: 0 0 0 10px rgba(102, 126, 234, 0);
-  
+
   /* Spacing Variables */
   --spacing-xs: 2px;
   --spacing-sm: 4px;
@@ -55,7 +55,7 @@
   --spacing-lg: 12px;
   --spacing-xl: 20px;
   --spacing-xxl: 32px;
-  
+
   /* Size Variables */
   --sidebar-width: 250px;
   --sidebar-collapsed: 60px;
@@ -71,7 +71,7 @@
   --border-radius-xxl: 15px;
   --border-radius-round: 50%;
   --border-radius-sidebar: 6px 20px 20px 6px;
-  
+
   /* Typography Variables */
   --font-size-xs: 0.6rem;
   --font-size-sm: 0.7rem;
@@ -89,7 +89,7 @@
   --font-weight-bold: 600;
   --font-weight-heavy: 700;
   --letter-spacing: 0.5px;
-  
+
   /* Transition Variables */
   --transition-fast: 0.2s;
   --transition-normal: 0.3s;
@@ -101,7 +101,7 @@
   --transition-bg-color: background 0.4s, color 0.4s, box-shadow 0.2s;
   --transition-all: all 0.3s ease;
   --transition-bg-size: background-size 0.3s;
-  
+
   /* Z-Index Variables */
   --z-sidebar: 1030;
   --z-toggle: 100;
@@ -559,9 +559,11 @@ table.dataTable thead th.sorting_desc::after {
   0% {
     box-shadow: var(--shadow-pulse);
   }
+
   70% {
     box-shadow: var(--shadow-pulse-end);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
   }
@@ -587,27 +589,30 @@ table.dataTable thead th.sorting_desc::after {
 
 /* Light yellow for Pending */
 .status-dropdown.pending-status {
-    background-color: #f34b4b;
+  background-color: #f34b4b;
 }
 
 /* Light blue for Picked */
 .status-dropdown.picked-status {
-    background-color: #fffa6b;
+  background-color: #fffa6b;
 }
 
 /* Light green for Closed */
 .status-dropdown.closed-status {
-    background-color: #20f193;
+  background-color: #20f193;
 }
 
 /* Debit from Bank colors */
 .debit-dropdown.yes-debit {
-  background-color: #00ff8c; /* light green */
-    
+  background-color: #00ff8c;
+  /* light green */
+
 }
+
 .debit-dropdown.no-debit {
-  background-color: #ff0015; /* light red */
-    
+  background-color: #ff0015;
+  /* light red */
+
 }
 
 
@@ -707,11 +712,12 @@ table.dataTable thead th.sorting_desc::after {
   transform: scaleX(1.4) scaleY(1.6);
   opacity: 0;
 } */
- #status-filter {
-    border-width: 2px;
-    transition: all 0.2s ease-in-out;
-  }
-  #status-filter:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.25rem rgba(13,110,253,0.25);
-  }
+#status-filter {
+  border-width: 2px;
+  transition: all 0.2s ease-in-out;
+}
+
+#status-filter:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}

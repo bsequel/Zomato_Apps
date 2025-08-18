@@ -14,7 +14,7 @@ $(document).ready(function () {
 
     // ==== INIT FUNCTIONS ====
     initUserInfo();
-    initSidebarToggle();
+    // initSidebarToggle();
     initNavigation();
     initCaseTable();
     initUserTable();

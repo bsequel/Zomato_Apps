@@ -1,5 +1,43 @@
 {% extends 'accounts/base.html' %}
 {% block title %}Login{% endblock %}
+
+
+{% block nav %}
+
+<li class="nav-item"><a class="nav-link" href="/" style="color: #ffffff;">Home</a></li>
+
+{% if user.is_authenticated %}
+
+
+<div class="profile" id="profileWrapper">
+    <button class="profile-btn" id="profileToggle">JD</button>
+    <div class="dropdown" id="profileDropdown">
+        <div class="user-info">
+            <p>
+                <span>👤</span>
+                <strong id="username">John Doe</strong>
+                <span class="badge bg-warning text-dark mb-1 px-3 py-1 rounded-pill" id="user-role">viewer</span>
+            </p>
+            <p style="font-size: 13px; color: rgb(0, 154, 159);">
+                <span>
+                    <i class="bi bi-envelope"></i>
+                </span>
+                <span id="user-email" class=" mb-1 px-1 py-1">john.doe@example.com</span>
+            </p>
+        </div>
+        <a class="bw-btn" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right pe-3"></i>Logout</a>
+    </div>
+</div>
+{% else %}
+
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'register' %}" style="color: #ffffff;">Register</a>
+</li>
+{% endif %}
+{% endblock %}
+
+
+
 {% block content %}
 
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">

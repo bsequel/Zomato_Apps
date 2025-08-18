@@ -7,7 +7,6 @@ $(document).ready(function () {
     let etlAutoInterval = null; // Store the interval ID
     const body = document.body;
     const username = body.dataset.username;
-    const email1 = body.dataset.email;
     const role = body.dataset.role;
     const defaultSection = $('.nav-link1.active').data('section');
     $('#activeSection').text(defaultSection);
@@ -23,47 +22,10 @@ $(document).ready(function () {
     initetl();
     initRefreshFunctionality();
 
-
-
-
-
-
-    // Format number in ₹ Indian style with commas
-    function formatINR(amount) {
-        return new Intl.NumberFormat('en-IN', {
-            style: 'currency',
-            currency: 'INR',
-            minimumFractionDigits: 2
-        }).format(amount);
-    }
-
-    // Format rupee amount into crore notation (₹x.xx Cr)
-    function formatToCrore(amountInRupees) {
-        let croreValue = amountInRupees / 10000000; // 1 Cr = 10 million rupees
-        return `₹${croreValue.toFixed(2)} Cr`;
-    }
-
-    // show username in two chars only in icon
-    function getInitials(name) {
-        const parts = name.trim().split(" ");
-        let initials = parts[0].charAt(0).toUpperCase();
-        if (parts.length > 1) {
-            initials += parts[parts.length - 1].charAt(0).toUpperCase();
-        }
-        return initials;
-    }
-
-
-
-
     // ==== FUNCTION DEFINITIONS ====
 
     function initUserInfo() {
         $('#username').text(username);
-        $('#profileToggle').text(getInitials(username));
-        $('#user-email').text(email1);
-        $('#user-role').text(role);
-
 
         // Update access level display in the card
         const accessLevelElement = $('.alert-card-access .alert-card-content');
@@ -259,190 +221,9 @@ $(document).ready(function () {
         etlAutoInterval = setInterval(updateCountdown, 1000); // Update every second
     }
 
-    // function initSidebarToggle() {
-    //     $('#toggleSidebar').on('click', function () {
-    //         const isMobile = window.innerWidth <= 768;
-    //         if (isMobile) {
-    //             $('#sidebar').toggleClass('show');
-    //             $('#overlay').toggleClass('active');
-    //         } else {
-    //             $('#sidebar').toggleClass('collapsed');
-    //             $('#mainContent').toggleClass('expanded');
-    //             $('#toggleIcon').toggleClass('bi-chevron-double-left bi-chevron-double-right');
-    //         }
-    //     });
-
-    //     $('#overlay').on('click', function () {
-    //         $('#sidebar').removeClass('show');
-    //         $('#overlay').removeClass('active');
-    //     });
-    // }
-
-    // Enhanced sidebar functionality with hover support
     function initSidebarToggle() {
-        let hoverTimeout;
-        let isHoverEnabled = true; // Flag to control hover behavior
-
-        // Original click toggle functionality
         $('#toggleSidebar').on('click', function () {
             const isMobile = window.innerWidth <= 768;
-
-            if (isMobile) {
-                $('#sidebar').toggleClass('show');
-                $('#overlay').toggleClass('active');
-            } else {
-                const isCurrentlyCollapsed = $('#sidebar').hasClass('collapsed');
-
-                // Toggle sidebar
-                $('#sidebar').toggleClass('collapsed');
-                $('#mainContent').toggleClass('expanded');
-                $('#toggleIcon').toggleClass('bi-chevron-double-left bi-chevron-double-right');
-
-                // Disable hover temporarily when manually toggling to avoid conflicts
-                isHoverEnabled = false;
-                setTimeout(() => {
-                    isHoverEnabled = true;
-                }, 300); // Re-enable after animation completes
-            }
-        });
-
-        // Hover functionality for desktop only
-        function initHoverBehavior() {
-            const sidebar = $('#sidebar');
-            const mainContent = $('#mainContent');
-            const toggleIcon = $('#toggleIcon');
-
-            // Hover to expand (when collapsed)
-            sidebar.on('mouseenter', function () {
-                if (!isHoverEnabled || window.innerWidth <= 768) return;
-
-                clearTimeout(hoverTimeout);
-
-                // Only expand on hover if currently collapsed
-                if (sidebar.hasClass('collapsed')) {
-                    sidebar.removeClass('collapsed').addClass('hover-expanded');
-                    mainContent.removeClass('expanded').addClass('hover-contracted');
-                    toggleIcon.removeClass('bi-chevron-double-right').addClass('bi-chevron-double-left');
-                }
-            });
-
-            // Hover to collapse (when expanded by hover)
-            sidebar.on('mouseleave', function () {
-                if (!isHoverEnabled || window.innerWidth <= 768) return;
-
-                clearTimeout(hoverTimeout);
-
-                // Add a small delay before collapsing to prevent flickering
-                hoverTimeout = setTimeout(() => {
-                    // Only collapse if it was expanded by hover (not by click)
-                    if (sidebar.hasClass('hover-expanded')) {
-                        sidebar.removeClass('hover-expanded').addClass('collapsed');
-                        mainContent.removeClass('hover-contracted').addClass('expanded');
-                        toggleIcon.removeClass('bi-chevron-double-left').addClass('bi-chevron-double-right');
-                    }
-                }, 300); // 300ms delay before auto-collapse
-            });
-        }
-
-        // Initialize hover behavior
-        initHoverBehavior();
-
-        // Handle window resize
-        $(window).on('resize', function () {
-            const isMobile = window.innerWidth <= 768;
-
-            if (isMobile) {
-                // Remove desktop classes on mobile
-                $('#sidebar').removeClass('collapsed hover-expanded');
-                $('#mainContent').removeClass('expanded hover-contracted');
-                isHoverEnabled = false;
-            } else {
-                isHoverEnabled = true;
-                // Ensure proper state on desktop
-                if (!$('#sidebar').hasClass('collapsed') && !$('#sidebar').hasClass('hover-expanded')) {
-                    $('#sidebar').addClass('collapsed');
-                    $('#mainContent').addClass('expanded');
-                    $('#toggleIcon').removeClass('bi-chevron-double-left').addClass('bi-chevron-double-right');
-                }
-            }
-        });
-
-        // Overlay click (mobile)
-        $('#overlay').on('click', function () {
-            $('#sidebar').removeClass('show');
-            $('#overlay').removeClass('active');
-        });
-
-        // Optional: Add smooth hover animations
-        addHoverAnimations();
-    }
-
-    // Add CSS animations for smooth hover transitions
-    function addHoverAnimations() {
-        // Check if styles already exist
-        if ($('#sidebar-hover-styles').length > 0) return;
-
-        const hoverStyles = `
-        <style id="sidebar-hover-styles">
-            /* Smooth transitions for hover states */
-            #sidebar {
-                transition: width 0.3s ease, margin-left 0.3s ease;
-            }
-            
-            #mainContent {
-                transition: margin-left 0.3s ease, width 0.3s ease;
-            }
-            
-            /* Hover indicator - optional visual feedback */
-            #sidebar:not(.collapsed):hover {
-                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            }
-            
-            #sidebar.collapsed:hover {
-                box-shadow: 2px 0 15px rgba(0,0,0,0.15);
-            }
-            
-            /* Optional: Add a subtle background change on hover */
-            #sidebar.collapsed:hover .nav-link1 {
-                background-color: rgba(255,255,255,0.05);
-                border-radius: 8px;
-                margin: 2px 8px;
-            }
-            
-            /* Smooth icon transitions */
-            #toggleIcon {
-                transition: transform 0.3s ease;
-            }
-            
-            /* Prevent text selection during hover animations */
-            #sidebar * {
-                user-select: none;
-            }
-            
-            /* Mobile - disable hover effects */
-            @media (max-width: 768px) {
-                #sidebar {
-                    transition: transform 0.3s ease !important;
-                }
-                
-                #sidebar:hover {
-                    box-shadow: none !important;
-                }
-            }
-        </style>
-    `;
-
-        $('head').append(hoverStyles);
-    }
-
-    // Alternative: More aggressive hover behavior (expands immediately)
-    function initAggressiveHoverBehavior() {
-        let hoverTimeout;
-        let isHoverEnabled = true;
-
-        $('#toggleSidebar').on('click', function () {
-            const isMobile = window.innerWidth <= 768;
-
             if (isMobile) {
                 $('#sidebar').toggleClass('show');
                 $('#overlay').toggleClass('active');
@@ -450,123 +231,8 @@ $(document).ready(function () {
                 $('#sidebar').toggleClass('collapsed');
                 $('#mainContent').toggleClass('expanded');
                 $('#toggleIcon').toggleClass('bi-chevron-double-left bi-chevron-double-right');
-
-                // Temporarily disable hover
-                isHoverEnabled = false;
-                setTimeout(() => { isHoverEnabled = true; }, 500);
             }
         });
-
-        // More aggressive hover - no delay
-        $('#sidebar').on('mouseenter', function () {
-            if (!isHoverEnabled || window.innerWidth <= 768) return;
-
-            clearTimeout(hoverTimeout);
-
-            if ($(this).hasClass('collapsed')) {
-                $(this).removeClass('collapsed');
-                $('#mainContent').removeClass('expanded');
-                $('#toggleIcon').removeClass('bi-chevron-double-right').addClass('bi-chevron-double-left');
-            }
-        });
-
-        $('#sidebar').on('mouseleave', function () {
-            if (!isHoverEnabled || window.innerWidth <= 768) return;
-
-            hoverTimeout = setTimeout(() => {
-                $('#sidebar').addClass('collapsed');
-                $('#mainContent').addClass('expanded');
-                $('#toggleIcon').removeClass('bi-chevron-double-left').addClass('bi-chevron-double-right');
-            }, 100); // Quick collapse
-        });
-
-        $('#overlay').on('click', function () {
-            $('#sidebar').removeClass('show');
-            $('#overlay').removeClass('active');
-        });
-    }
-
-    // Usage: Replace your existing initSidebarToggle() function with one of these:
-    // 1. Use initSidebarToggle() for gentle hover behavior with delays
-    // 2. Use initAggressiveHoverBehavior() for immediate hover response
-
-    // Example of how to integrate this into your existing code:
-    $(document).ready(function () {
-        // ... your existing code ...
-
-        // Replace your existing initSidebarToggle() call with:
-        initSidebarToggle(); // Gentle hover behavior
-        // OR
-        // initAggressiveHoverBehavior(); // Aggressive hover behavior
-
-        // ... rest of your existing code ...
-    });
-
-    // Optional: Add hover configuration options
-    const sidebarHoverConfig = {
-        enabled: true,
-        expandDelay: 0,      // Delay before expanding on hover (ms)
-        collapseDelay: 300,  // Delay before collapsing on leave (ms)
-        mobileBreakpoint: 768 // Breakpoint below which hover is disabled
-    };
-
-    function initConfigurableHoverBehavior(config = sidebarHoverConfig) {
-        let hoverTimeout;
-        let isHoverEnabled = config.enabled;
-
-        $('#toggleSidebar').on('click', function () {
-            const isMobile = window.innerWidth <= config.mobileBreakpoint;
-
-            if (isMobile) {
-                $('#sidebar').toggleClass('show');
-                $('#overlay').toggleClass('active');
-            } else {
-                $('#sidebar').toggleClass('collapsed');
-                $('#mainContent').toggleClass('expanded');
-                $('#toggleIcon').toggleClass('bi-chevron-double-left bi-chevron-double-right');
-
-                isHoverEnabled = false;
-                setTimeout(() => { isHoverEnabled = config.enabled; }, 300);
-            }
-        });
-
-        $('#sidebar').on('mouseenter', function () {
-            if (!isHoverEnabled || window.innerWidth <= config.mobileBreakpoint) return;
-
-            clearTimeout(hoverTimeout);
-
-            if (config.expandDelay > 0) {
-                hoverTimeout = setTimeout(() => {
-                    expandSidebar();
-                }, config.expandDelay);
-            } else {
-                expandSidebar();
-            }
-        });
-
-        $('#sidebar').on('mouseleave', function () {
-            if (!isHoverEnabled || window.innerWidth <= config.mobileBreakpoint) return;
-
-            clearTimeout(hoverTimeout);
-
-            hoverTimeout = setTimeout(() => {
-                collapseSidebar();
-            }, config.collapseDelay);
-        });
-
-        function expandSidebar() {
-            if ($('#sidebar').hasClass('collapsed')) {
-                $('#sidebar').removeClass('collapsed');
-                $('#mainContent').removeClass('expanded');
-                $('#toggleIcon').removeClass('bi-chevron-double-right').addClass('bi-chevron-double-left');
-            }
-        }
-
-        function collapseSidebar() {
-            $('#sidebar').addClass('collapsed');
-            $('#mainContent').addClass('expanded');
-            $('#toggleIcon').removeClass('bi-chevron-double-left').addClass('bi-chevron-double-right');
-        }
 
         $('#overlay').on('click', function () {
             $('#sidebar').removeClass('show');
@@ -675,7 +341,7 @@ $(document).ready(function () {
                 //     className: 'btn btn-outline-primary btn-sm'
                 // }
             ],
-            pageLength: 50,
+            pageLength: 10,
             lengthMenu: [5, 10, 25, 50],
             columnDefs: [
                 // Status column
@@ -704,8 +370,8 @@ $(document).ready(function () {
 
                         return `
                         <select class="form-select form-select-sm debit-dropdown ${data.toLowerCase()}-debit" data-case-id="${row[0]}">
-                            <option class="bg-danger text-white" value="Yes" ${selectedYes}>Yes</option>
-                            <option class="bg-success text-white" value="No" ${selectedNo}>No</option>
+                            <option value="Yes" ${selectedYes}>Yes</option>
+                            <option value="No" ${selectedNo}>No</option>
                         </select>
                     `;
                     }
@@ -873,45 +539,23 @@ $(document).ready(function () {
                 new Date().toISOString().slice(0, 10) + '.xlsx');
         }
 
-        // setTimeout(() => {
-        //     $('.dt-buttons').append(`
-        //     <button id="customCsvExportWithHeaders" class="btn btn-dark btn-sm ms-2">
-        //         <i class="bi bi-file-earmark-spreadsheet"></i> CSV with Headers
-        //     </button>
-        //     <button id="customExcelExportWithHeaders" class="btn btn-dark btn-sm ms-1">
-        //         <i class="bi bi-file-earmark-excel"></i> Excel with Headers
-        //     </button>
-        // `);
-
-        //     $('#customCsvExportWithHeaders').on('click', function () {
-        //         createCustomExportWithHeaders('csv');
-        //     });
-
-        //     $('#customExcelExportWithHeaders').on('click', function () {
-        //         createCustomExportWithHeaders('excel');
-        //     });
-        // }, 100);
-
         setTimeout(() => {
-            // Only add export buttons to the cases table, not user table
-            const casesTableButtons = $('#casesTable_wrapper .dt-buttons');
-
-            if (casesTableButtons.length > 0 && $('#customCsvExportWithHeaders').length === 0) {
-                casesTableButtons.append(`
-          
+            $('.dt-buttons').append(`
+            <button id="customCsvExportWithHeaders" class="btn btn-dark btn-sm ms-2">
+                <i class="bi bi-file-earmark-spreadsheet"></i> CSV with Headers
+            </button>
             <button id="customExcelExportWithHeaders" class="btn btn-dark btn-sm ms-1">
                 <i class="bi bi-file-earmark-excel"></i> Excel with Headers
             </button>
         `);
 
-                $('#customCsvExportWithHeaders').on('click', function () {
-                    createCustomExportWithHeaders('csv');
-                });
+            $('#customCsvExportWithHeaders').on('click', function () {
+                createCustomExportWithHeaders('csv');
+            });
 
-                $('#customExcelExportWithHeaders').on('click', function () {
-                    createCustomExportWithHeaders('excel');
-                });
-            }
+            $('#customExcelExportWithHeaders').on('click', function () {
+                createCustomExportWithHeaders('excel');
+            });
         }, 100);
     }
 
@@ -1131,14 +775,8 @@ $(document).ready(function () {
         $('#card-picked').text(picked);
         $('#card-closed').text(closed);
 
-        // const fraudInCr = totalFraud / 10000000;
-        // $('#card-fraud-amount').text("₹" + fraudInCr.toFixed(4) + " Cr");
-        if (totalFraud >= 10000000) {
-            $('#card-fraud-amount').text(formatToCrore(totalFraud));
-        } else {
-            $('#card-fraud-amount').text(formatINR(totalFraud));
-        }
-
+        const fraudInCr = totalFraud / 10000000;
+        $('#card-fraud-amount').text("₹" + fraudInCr.toFixed(4) + " Cr");
     }
 
     function updateDashboardCards(data) {
@@ -1162,14 +800,8 @@ $(document).ready(function () {
         $('#card-picked').text(picked);
         $('#card-closed').text(closed);
 
-        // const fraudInCr = totalFraud / 10000000;
-        // $('#card-fraud-amount').text("₹" + fraudInCr.toFixed(4) + " Cr");
-        if (totalFraud >= 10000000) {
-            $('#card-fraud-amount').text(formatToCrore(totalFraud));
-        } else {
-            $('#card-fraud-amount').text(formatINR(totalFraud));
-        }
-
+        const fraudInCr = totalFraud / 10000000;
+        $('#card-fraud-amount').text("₹" + fraudInCr.toFixed(4) + " Cr");
     }
 
     // ========================
@@ -1243,42 +875,15 @@ $(document).ready(function () {
     // ========================
     // Initialize refresh functionality
     // ========================
-    // function initRefreshFunctionality() {
-    //     // Add manual refresh button to the DataTable buttons area
-    //     setTimeout(() => {
-    //         if ($('#manualRefreshBtn').length === 0) {
-    //             $('.dt-buttons').append(`
-    //                 <button id="manualRefreshBtn" class="btn btn-dark btn-sm ms-2" title="Refresh Data">
-    //                     <i class="bi bi-arrow-clockwise"></i> Refresh
-    //                 </button>
-    //             `);
-
-    //             $('#manualRefreshBtn').on('click', function () {
-    //                 const btn = $(this);
-    //                 btn.prop('disabled', true).html('<i class="bi bi-arrow-clockwise"></i> Refreshing...');
-
-    //                 refreshTableData();
-
-    //                 setTimeout(() => {
-    //                     btn.prop('disabled', false).html('<i class="bi bi-arrow-clockwise"></i> Refresh');
-    //                 }, 1000);
-    //             });
-    //         }
-    //     }, 500);
-
-    //     console.log('✅ Refresh functionality initialized');
-    // }
     function initRefreshFunctionality() {
-        // Add manual refresh button only to the cases table buttons area
+        // Add manual refresh button to the DataTable buttons area
         setTimeout(() => {
-            const casesTableButtons = $('#casesTable_wrapper .dt-buttons');
-
-            if (casesTableButtons.length > 0 && $('#manualRefreshBtn').length === 0) {
-                casesTableButtons.append(`
-                <button id="manualRefreshBtn" class="btn btn-dark btn-sm ms-2" title="Refresh Data">
-                    <i class="bi bi-arrow-clockwise"></i> Refresh
-                </button>
-            `);
+            if ($('#manualRefreshBtn').length === 0) {
+                $('.dt-buttons').append(`
+                    <button id="manualRefreshBtn" class="btn btn-dark btn-sm ms-2" title="Refresh Data">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                    </button>
+                `);
 
                 $('#manualRefreshBtn').on('click', function () {
                     const btn = $(this);

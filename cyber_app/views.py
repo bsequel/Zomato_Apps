@@ -90,7 +90,7 @@ def run_pdf_etl(request):
                 success_count += 1
             except Exception as e:
                 error_msg = f"Error processing email {email_id}:\n{e}"
-                print("❌", error_msg)
+                
                 notify_admin("ETL PDF Processing Error", error_msg)
 
         mail.logout()

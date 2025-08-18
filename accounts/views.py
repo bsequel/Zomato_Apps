@@ -21,7 +21,7 @@ def home(request):
 
 
 VIEW_ONLY_EMAILS = ['view1@example.com', 'view2@example.com']
-ADMIN_EMAILS = ['huzefa@gmail.com', 'bheem@gmail.com']
+ADMIN_EMAILS = ['huzefa1@gmail.com', 'bheem@gmail.com']
 
 
 def register_view(request):
@@ -54,7 +54,7 @@ def login_view(request):
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('dashboard')
+                return redirect('home')
             else:
                 form.add_error(None, 'Invalid email or password.')
     else:
@@ -90,7 +90,17 @@ def dashboard_view(request):
         'create_form': form,
         'users': users,
     })
+    # return render(request, 'accounts/home.html')
 
+
+
+@role_required('admin')
+@login_required
+def home_view(request):
+    if request.user.role != 'admin':
+        return redirect('not_authorized')
+
+    return render(request, 'accounts/home.html')
 
 User = get_user_model()
 
@@ -129,7 +139,7 @@ def create_user_ajax(request):
     else:
         return JsonResponse({'success': False, 'errors': form.errors.get_json_data()}, status=400)
 
-
+@login_required
 @api_view(['GET'])
 def dummy_cases_api(request):
     statuses = ['Pending', 'Picked', 'Closed']

@@ -6,6 +6,15 @@ from pathlib import Path
 from dotenv import load_dotenv
 from pypdf import PdfReader, PdfWriter
 from .utils import extract_ack_no
+from .models import CyberCellReport  # Your model storing ack_no
+# from .custom_exception import DuplicateAckNumberError
+
+# class DuplicateAckNumberError(Exception):
+#     """Raised when an email contains an acknowledge number that already exists in the DB."""
+#     pass
+
+
+
 
 load_dotenv()
 
@@ -22,6 +31,8 @@ DECRYPTED_DIR = "DECRYPTED_PDFS"
 
 os.makedirs(SOURCE_DIR, exist_ok=True)
 os.makedirs(DECRYPTED_DIR, exist_ok=True)
+
+
 
 def remove_pdf_password(input_path, output_path, password):
     try:
@@ -41,6 +52,7 @@ def remove_pdf_password(input_path, output_path, password):
     except Exception as e:
         print(f"❌ Failed to decrypt {input_path}: {e}")
         return False
+
 
 def fetch_and_decrypt_pdfs():
     decrypted_info = []
@@ -64,13 +76,21 @@ def fetch_and_decrypt_pdfs():
         if not ack_no:
             print("❌ Acknowledgement number missing in subject.")
             continue
+        if CyberCellReport.objects.filter(reference_number=ack_no).exists():
+            print("❌ Report already exists in database.")
+            # raise DuplicateAckNumberError(f"Skipping email {email_id} — duplicate ack_no {ack_no} found in DB."
+            # )
+            continue
+            
 
         decrypted_path = None
         for part in msg.walk():
             if part.get_content_disposition() == 'attachment':
                 ext = os.path.splitext(part.get_filename())[1] or ".pdf"
-                raw_path = os.path.abspath(os.path.join(SOURCE_DIR, f"{ack_no}{ext}"))
-                decrypted_path_candidate = os.path.abspath(os.path.join(DECRYPTED_DIR, f"{ack_no}{ext}"))
+                raw_path = os.path.abspath(
+                    os.path.join(SOURCE_DIR, f"{ack_no}{ext}"))
+                decrypted_path_candidate = os.path.abspath(
+                    os.path.join(DECRYPTED_DIR, f"{ack_no}{ext}"))
 
                 with open(raw_path, 'wb') as f:
                     f.write(part.get_payload(decode=True))
